@@ -1,0 +1,17 @@
+
+      {% extends "base.html" %}
+      {% load bootstrap4 %}
+      {% block title %} Delete schema {% endblock %}
+      {% block h %} Delete schema {% endblock %}
+    {% block content %}
+
+    
+    <p>Are you sure you want to delete the schema: {{ schema }}?</p>
+    
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input type="submit" action="" value="Yes, delete" />
+    </form>
+    
+    {% endblock %}
+  

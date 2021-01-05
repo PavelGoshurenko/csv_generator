@@ -1,0 +1,44 @@
+
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block title %} Data schemas {% endblock %}
+{% block h %} Data schemas {% endblock %}
+{% block context %}<p><a class="btn btn-secondary btn-lg btn-block" href="{% url 'schema_create'%}" role="button">New schema</a></p>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+   
+    {% if schemas %}
+    
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>Наименование</th>
+          <th>Сумма</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+    {% for schema in schemas %}
+    <tr>
+    <td><a href="{% url 'schema_update' schema.id %}">{{ schema.name }}</a> </td><td>  грн.</td> 
+    <td>  <a href="{% url 'schema_delete' schema.id %}">Delete</a></td>
+       
+          </tr>
+  {% endfor %}
+</table>
+
+  {% else %}
+    <p>You don't have any schemas. </p>
+    
+  {% endif %}  
+  
+
+
+  
+    
+{% endblock %}

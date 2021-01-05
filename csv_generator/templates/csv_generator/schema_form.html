@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block title %} New schema {% endblock %}
+{% block h %} New schema {% endblock %}
+{% block content %}
+<form action="" method="post" class="form">
+  {% csrf_token %}
+  
+  {% bootstrap_form form %}
+
+  
+{% buttons %}
+<button type="submit" class="btn btn-secondary">
+  Submit
+</button>
+{% endbuttons %}
+  
+</form>
+
+
+<form action="" method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% for form in formset %}
+    <p>  {{ form }}</p>
+  {% endfor %}
+  <input type="submit" value="Submit" />
+</form>
+
+
+
+   
+  
+{% endblock %}
+  
