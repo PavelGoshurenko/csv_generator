@@ -17,15 +17,18 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th>Наименование</th>
-          <th>Сумма</th>
-          <th></th>
+        
+          <th>Title</th>
+          <th>Modified</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
     {% for schema in schemas %}
     <tr>
-    <td><a href="{% url 'schema_update' schema.id %}">{{ schema.name }}</a> </td><td>  грн.</td> 
+    
+    <td><a href="{% url 'schema_update' schema.id %}">{{ schema.name }}</a> </td>
+    <td> {{ schema.updated_at|date:"Y-m-d" }} </td> 
     <td>  <a href="{% url 'schema_delete' schema.id %}">Delete</a></td>
        
           </tr>
