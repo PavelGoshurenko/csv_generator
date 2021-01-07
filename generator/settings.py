@@ -129,6 +129,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
 
 # REDIS related settings 
+BROKER_URL = os.environ.get("REDIS_URL")
 """ BROKER_URL = 'redis://127.0.0.1:6379/0'
 BROKER_TRANSPORT = 'redis' """
 
