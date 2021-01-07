@@ -22,11 +22,10 @@ GENERATORS = {
     'Phone number': fake.phone_number,
 }
 
-if settings.DEBUG:
-    app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
-                CELERY_RESULT_BACKEND=os.environ['REDIS_URL'])
+#if settings.DEBUG:
+#app.conf.update(BROKER_URL=os.environ['REDIS_URL'], CELERY_RESULT_BACKEND=os.environ['REDIS_URL'])
     #app.conf.broker_url = 'redis://localhost:6379/0'
-else:
+#else:
     """ app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
                 CELERY_RESULT_BACKEND=os.environ['REDIS_URL']) """
 
