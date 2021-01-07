@@ -49,7 +49,6 @@ def generate_csv(data_set_id):
         time.sleep(1)
     csv_file = ContentFile(csv_buffer.getvalue().encode('utf-8'))
     file_name = '{}_{}.csv'.format(schema.name, data_set.created_at.strftime("%d_%m_%Y"))
-    path = join('media/', file_name)
     data_set.file.save(file_name, csv_file)
     data_set.status = 'Ready'
     data_set.save()

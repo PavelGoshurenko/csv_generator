@@ -41,8 +41,8 @@
     <td><button type="button" name="status-button" class="btn btn-secondary btn-sm">{{ data_set.status }}</button></a> </td>
      
     <td>  {% if data_set.status == 'Ready' %}
-      {% load static %}
-      <a href='{% static dataset.file.url %}'>Download</a>
+      
+      <a href='{{ dataset.file.url }}'>Download</a>
       {% endif %}  
       </td>
        
