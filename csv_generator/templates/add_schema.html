@@ -19,8 +19,8 @@
   
   {% for form in formset %}
   
-  <div class="form-row"> {% bootstrap_form form layout='inline' form_group_class='col-auto m-2'%} 
-  <a href='#' onclick="deleteForm(event)">Delete</a></div>
+  <div class="form-row"> {% bootstrap_form form layout='inline' form_group_class='col-auto m-1'%} 
+  <a href='#' onclick="deleteForm(event)" style="color:red">Delete</a></div>
   {% endfor %}
   <button id="add-form" type="button" class="btn btn-secondary">Add Column</button>
   
@@ -52,16 +52,33 @@
     e.preventDefault();
     currentForm = e.target.parentNode;
     currentForm.remove();
-    formNum -= 1; //Increment the form number
-    totalForms.setAttribute('value', `${formNum+1}`); //Increment the number of total forms in the form management
-    let columnForms = document.querySelectorAll(".column-form");
+    formNum -= 1; //Decrement the form number
+    totalForms.setAttribute('value', `${formNum+1}`); //Decrement the number of total forms in the form management
+    let columnForms = document.querySelectorAll(".form-row");
     let counter = 0;
     columnForms.forEach((form) => {
       let formRegex = RegExp(`column_set-(\\d){1}-`,'g'); //Regex to find all instances of the form number
-      form.innerHTML = form.innerHTML.replace(formRegex, `column_set-${counter}-`); //Update the new form to have the correct form number
+      form.innerHTML = form.innerHTML.replace(formRegex, `column_set-${counter}-`); //Update all forms to have the correct form number
       counter += 1;
     });
   }
+
+  function showRange(e){
+    const dataTypeInputName = e.target.name;
+    const dataTypeInputValue = e.target.value;
+    const startInputName = `${dataTypeInputName.slice(0, 13)}start_from`;
+    const toInputName = `${dataTypeInputName.slice(0, 13)}to`;
+    console.log(startInputName);
+    const startInput = document.getElementsByName(startInputName)[0];
+    const toInput = document.getElementsByName(toInputName)[0];
+    if (dataTypeInputValue === 'Age') {
+      startInput.hidden = false;
+      toInput.hidden = false;
+    } else {
+      startInput.hidden = true;
+      toInput.hidden = true;
+    }
+  };
 </script>
 
    

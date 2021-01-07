@@ -27,9 +27,11 @@
     {% for schema in schemas %}
     <tr>
     
-    <td><a href="{% url 'schema_update' schema.id %}">{{ schema.name }}</a> </td>
+    <td><a href="{% url 'data_sets' schema.id %}">{{ schema.name }}</a> </td>
     <td> {{ schema.updated_at|date:"Y-m-d" }} </td> 
-    <td>  <a href="{% url 'schema_delete' schema.id %}">Delete</a></td>
+    <td>  
+      <a href="{% url 'data_sets' schema.id %}">Edit scheme</a>
+      <a href="{% url 'schema_delete' schema.id %}" style="color:red">Delete</a></td>
        
           </tr>
   {% endfor %}

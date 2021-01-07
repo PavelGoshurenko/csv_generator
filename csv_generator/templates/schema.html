@@ -1,9 +1,0 @@
-
-{% extends "base.html" %}
-
-{% block content %}
-<p><a href="{% url 'schema' schema.id %}">{{ schema.name }}</a>
-  <a href="{% url 'schema_update' schema.id %}">Edit</a> 
-    <a href="{% url 'schema_delete' schema.id %}">Delete</a></p>
-
-{% endblock %}

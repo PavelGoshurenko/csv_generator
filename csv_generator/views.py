@@ -5,31 +5,30 @@ from django.views import generic
 from django.forms.models import inlineformset_factory
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from csv_generator.models import Schema, Column
-from csv_generator.forms import SchemaForm
+from csv_generator.models import Schema, Column, DataSet
+from csv_generator.forms import SchemaForm, DataSetForm, ColumnForm
+from csv_generator.tasks import generate_csv
 
-# Schemas views
+
+
 class SchemasView(LoginRequiredMixin, generic.ListView):
     template_name = 'schemas.html'
     context_object_name = 'schemas'
 
     def get_queryset(self):
-        return Schema.objects.all()
-
-
-class SchemaView(LoginRequiredMixin, generic.DetailView):
-    model = Schema
-    template_name = "schema.html"
+        return Schema.objects.filter(user=self.request.user)
 
 
 @login_required
 def schema_create(request):
-    ColumnsFormSet = inlineformset_factory(Schema, Column, can_order=False, extra=1, can_delete=False, exclude=('id',))
+    ColumnsFormSet = inlineformset_factory(Schema, Column, form=ColumnForm, can_order=False, extra=1, can_delete=False)
     if request.method == 'POST':
         formset = ColumnsFormSet(request.POST)
         form = SchemaForm(request.POST)
         if formset.is_valid() and form.is_valid():
             schema = form.save()
+            schema.user = request.user
+            schema.save()
             for column_form in formset:
                 if column_form.cleaned_data:
                     column = column_form.save(commit=False)
@@ -44,13 +43,24 @@ def schema_create(request):
 
 
 
-class SchemaUpdate(LoginRequiredMixin, UpdateView):
-    model = Schema
-    fields = '__all__'
-    success_url = reverse_lazy('schemas')
-    template_name = 'schema_update.html'
-
-
 class SchemaDelete(LoginRequiredMixin, DeleteView):
     model = Schema
     success_url = reverse_lazy('schemas')
+
+
+@login_required
+def data_sets(request, pk):
+    schema = Schema.objects.get(id=pk)
+    if request.method == 'POST':
+        form = DataSetForm(request.POST)
+        if form.is_valid():
+            new_data_set = DataSet(
+                rows=form.cleaned_data['rows'],
+                schema=schema
+            )
+            new_data_set.save()
+            generate_csv.delay(new_data_set.id)
+    form = DataSetForm()
+    data_sets = DataSet.objects.filter(schema=schema)
+    return render(request, 'data_sets.html', {'schema': schema, 'data_sets': data_sets, 'form': form})
+

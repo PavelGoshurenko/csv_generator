@@ -8,6 +8,9 @@ django = "*"
 python-dotenv = "*"
 django-heroku = "*"
 django-bootstrap4 = "*"
+faker = "*"
+redis = "*"
+celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
 gunicorn = "*"
