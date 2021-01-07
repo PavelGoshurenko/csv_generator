@@ -1,2 +1,2 @@
 web: gunicorn generator.wsgi --log-file -
-worker: celery worker --app=tasks.app
+worker: celery -A generator worker --loglevel=INFO
