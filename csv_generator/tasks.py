@@ -1,5 +1,6 @@
 import csv
 import random
+import os
 from faker import Faker
 import time
 from generator.celery import app
@@ -21,7 +22,11 @@ GENERATORS = {
     'Phone number': fake.phone_number,
 }
 
-app.conf.broker_url = 'redis://localhost:6379/0'
+if settings.DEBUG:
+    app.conf.broker_url = 'redis://localhost:6379/0'
+else:
+    app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
+                CELERY_RESULT_BACKEND=os.environ['REDIS_URL'])
 
 @app.task
 def generate_csv(data_set_id):
