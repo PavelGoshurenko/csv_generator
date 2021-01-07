@@ -23,7 +23,9 @@ GENERATORS = {
 }
 
 if settings.DEBUG:
-    app.conf.broker_url = 'redis://localhost:6379/0'
+    app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
+                CELERY_RESULT_BACKEND=os.environ['REDIS_URL'])
+    #app.conf.broker_url = 'redis://localhost:6379/0'
 else:
     """ app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
                 CELERY_RESULT_BACKEND=os.environ['REDIS_URL']) """
