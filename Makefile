@@ -9,3 +9,6 @@ migrate:
 
 heroku:
 	git push heroku master
+
+lint:
+	flake8
