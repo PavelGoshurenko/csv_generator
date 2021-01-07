@@ -1,4 +1,5 @@
 import os
+from django.conf import settings
 
 from celery import Celery
 
@@ -6,7 +7,8 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'generator.settings')
 
 app = Celery('generator')
-app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
+if not settings.DEBUG:
+    app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
                 CELERY_RESULT_BACKEND=os.environ['REDIS_URL'])
 
 # Using a string here means the worker doesn't have to serialize
