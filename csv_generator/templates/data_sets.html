@@ -42,7 +42,7 @@
      
     <td>  {% if data_set.status == 'Ready' %}
       {% load static %}
-      <a href='{% static data_set.file.url %}'>Download</a>
+      <a href='{{ data_set.file.url }}'>Download</a>
       {% endif %}  
       </td>
        

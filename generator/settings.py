@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'csv_generator',
     'bootstrap4',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -126,15 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
-MEDIA_URL = '/media/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+#STATIC_URL = '/static/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
+#MEDIA_URL = '/media/'
+
 
 # REDIS related settings 
 BROKER_URL = os.environ.get("REDIS_URL")
@@ -145,3 +141,22 @@ BROKER_TRANSPORT = 'redis'
 if '/app' in os.environ['HOME']:
     import django_heroku
     django_heroku.settings(locals())
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+AWS_ACCESS_KEY_ID = 'AKIA2E2ZIUWURTKCFPMS'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'csvgenerator-media'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_LOCATION = 'static'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
