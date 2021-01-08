@@ -10,28 +10,6 @@ from csv_generator.forms import SchemaForm, DataSetForm, ColumnForm
 from csv_generator.tasks import generate_csv
 
 
-# delete
-import csv
-import random
-import os
-from faker import Faker
-import time
-from io import StringIO
-from os.path import join
-from django.conf import settings
-from django.core.files.base import ContentFile
-fake = Faker()
-
-
-
-GENERATORS = {
-    'Full name': fake.name,
-    'Job': fake.job,
-    'Address': fake.address,
-    'Phone number': fake.phone_number,
-}
-########################
-
 class SchemasView(LoginRequiredMixin, generic.ListView):
     template_name = 'schemas.html'
     context_object_name = 'schemas'
@@ -68,7 +46,7 @@ class SchemaDelete(LoginRequiredMixin, DeleteView):
     model = Schema
     success_url = reverse_lazy('schemas')
 
-def generate_csvvv(data_set_id):
+def generate_csv(data_set_id):
     data_set = DataSet.objects.get(id=data_set_id)
     schema = data_set.schema
     columns = Column.objects.filter(schema=schema).order_by('order')
