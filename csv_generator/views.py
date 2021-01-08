@@ -46,28 +46,6 @@ class SchemaDelete(LoginRequiredMixin, DeleteView):
     model = Schema
     success_url = reverse_lazy('schemas')
 
-def generate_csv(data_set_id):
-    data_set = DataSet.objects.get(id=data_set_id)
-    schema = data_set.schema
-    columns = Column.objects.filter(schema=schema).order_by('order')
-    column_names = [column.name for column in columns]
-    csv_buffer = StringIO()
-    writer = csv.writer(csv_buffer, dialect='excel', delimiter=',', quotechar='"')
-    writer.writerow(column_names)
-    for _ in range(data_set.rows):
-        row = []
-        for column in columns:
-            if column.data_type == "Age":
-                row.append(random.randint(column.start_from, column.to))
-            else:
-                row.append(GENERATORS[column.data_type]())
-        writer.writerow(row)
-        time.sleep(1)
-    csv_file = ContentFile(csv_buffer.getvalue().encode('utf-8'))
-    file_name = '{}_{}.csv'.format(schema.name, data_set.created_at.strftime("%d_%m_%Y"))
-    data_set.file.save(file_name, csv_file)
-    data_set.status = 'Ready'
-    data_set.save()
 
 @login_required
 def data_sets(request, pk):
@@ -80,7 +58,7 @@ def data_sets(request, pk):
                 schema=schema
             )
             new_data_set.save()
-            generate_csvvv(new_data_set.id) # add delay
+            generate_csv(new_data_set.id) # add delay
     form = DataSetForm()
     data_sets = DataSet.objects.filter(schema=schema)
     return render(request, 'data_sets.html', {'schema': schema, 'data_sets': data_sets, 'form': form})
