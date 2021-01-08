@@ -6,7 +6,6 @@ class Schema(models.Model):
     SEPARATORS = [
         (',', 'Comma (,)'),
         (';', 'Semicolon (;)'),
-        ('  ', 'Tab (   )')
     ]
     STRING_CHARACTERS = [
         ('"', 'Double-quote (")'),
@@ -16,7 +15,9 @@ class Schema(models.Model):
         max_length=200,
         unique=True,
         verbose_name="Schema")
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        null=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -33,12 +34,13 @@ class Schema(models.Model):
         default='"',
         verbose_name="String character"
         )
-    
+
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['-updated_at']
+
 
 class Column(models.Model):
     DATA_TYPES = [
@@ -58,7 +60,6 @@ class Column(models.Model):
         )
     order = models.IntegerField(
         verbose_name='Order',
-        default=0
         )
     schema = models.ForeignKey(
         Schema, null=True,
@@ -73,14 +74,14 @@ class Column(models.Model):
         verbose_name='To',
         default=60
         )
-    
-    
+
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['order', 'name']
         unique_together = ['schema', 'order']
+
 
 class DataSet(models.Model):
     STATUS_CHOICES = [
@@ -97,8 +98,12 @@ class DataSet(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Schema'
         )
-    rows = models.PositiveIntegerField(verbose_name='Rows', default=500)
+    rows = models.PositiveIntegerField(
+        verbose_name='Rows',
+        default=500)
     file = models.FileField(blank=True, null=True)
 
     def __str__(self):
-        return '{} {}'.format(self.schema.name, self.created_at.strftime("%d.%m.%Y"))
+        return '{} {}'.format(
+            self.schema.name,
+            self.created_at.strftime("%d.%m.%Y"))

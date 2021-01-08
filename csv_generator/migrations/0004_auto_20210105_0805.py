@@ -18,16 +18,27 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='column',
             name='schema',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.ProtectedError, to='csv_generator.schema', verbose_name='Schema'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.ProtectedError,
+                to='csv_generator.schema',
+                verbose_name='Schema'),
         ),
         migrations.AlterField(
             model_name='column',
             name='data_type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.ProtectedError, to='csv_generator.datatype', verbose_name='Type'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.ProtectedError,
+                to='csv_generator.datatype',
+                verbose_name='Type'),
         ),
         migrations.AlterField(
             model_name='column',
             name='name',
-            field=models.CharField(max_length=200, unique=True, verbose_name='Column name'),
+            field=models.CharField(
+                max_length=200,
+                unique=True,
+                verbose_name='Column name'),
         ),
     ]

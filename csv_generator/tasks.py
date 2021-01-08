@@ -1,19 +1,18 @@
 import csv
 import random
-import os
 from faker import Faker
 import time
 from generator.celery import app
 from io import StringIO
-from os.path import join
-from django.conf import settings
 from django.core.files.base import ContentFile
-from csv_generator.models import DataSet, Column, Schema
+from csv_generator.models import DataSet, Column
 
 fake = Faker()
 
+
 def age_generator(start_from, to):
     return random.randint(start_from, to)
+
 
 GENERATORS = {
     'Full name': fake.name,
@@ -22,6 +21,7 @@ GENERATORS = {
     'Phone number': fake.phone_number,
 }
 
+
 @app.task
 def generate_csv(data_set_id):
     data_set = DataSet.objects.get(id=data_set_id)
@@ -29,7 +29,11 @@ def generate_csv(data_set_id):
     columns = Column.objects.filter(schema=schema).order_by('order')
     column_names = [column.name for column in columns]
     csv_buffer = StringIO()
-    writer = csv.writer(csv_buffer, dialect='excel', delimiter=',', quotechar='"')
+    writer = csv.writer(
+        csv_buffer,
+        dialect='excel',
+        delimiter=schema.separator,
+        quotechar=schema.string_character)
     writer.writerow(column_names)
     for _ in range(data_set.rows):
         row = []
@@ -39,9 +43,10 @@ def generate_csv(data_set_id):
             else:
                 row.append(GENERATORS[column.data_type]())
         writer.writerow(row)
-        time.sleep(1)
     csv_file = ContentFile(csv_buffer.getvalue().encode('utf-8'))
-    file_name = '{}_{}.csv'.format(schema.name, data_set.created_at.strftime("%d_%m_%Y"))
+    file_name = '{}_{}.csv'.format(
+        schema.name,
+        data_set.created_at.strftime("%d_%m_%Y"))
     data_set.file.save(file_name, csv_file)
     data_set.status = 'Ready'
     data_set.save()

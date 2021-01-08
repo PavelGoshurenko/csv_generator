@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, Select, NumberInput
+from django.forms import Select, NumberInput
 from csv_generator.models import Schema, DataSet, Column
 
 
@@ -8,10 +8,12 @@ class SchemaForm (forms.ModelForm):
         model = Schema
         fields = ('name', 'separator', 'string_character')
 
+
 class DataSetForm (forms.ModelForm):
     class Meta:
         model = DataSet
         fields = ('rows',)
+
 
 class ColumnForm (forms.ModelForm):
     class Meta:
@@ -22,4 +24,3 @@ class ColumnForm (forms.ModelForm):
             'start_from': NumberInput(attrs={"hidden": "true"}),
             'to': NumberInput(attrs={"hidden": "true"}),
         }
-

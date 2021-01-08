@@ -4,84 +4,72 @@
 {% block h %} New schema {% endblock %}
 {% block content %}
 <form action="" method="post" class="form" id="form-container">
-  {% csrf_token %}
-  
-  {% bootstrap_form form %}
-
-  
-{% buttons %}
-<button type="submit" class="btn btn-secondary">Submit</button>
-{% endbuttons %}
-  
-
-  {% csrf_token %}
-  {{ formset.management_form }}
-  
-  {% for form in formset %}
-  
-  <div class="form-row"> {% bootstrap_form form layout='inline' form_group_class='col-auto m-1'%} 
-  <a href='#' onclick="deleteForm(event)" style="color:red">Delete</a></div>
-  {% endfor %}
-  <button id="add-form" type="button" class="btn btn-secondary">Add Column</button>
-  
+   {% csrf_token %}
+   {% bootstrap_form form %}
+   {% buttons %}
+   <button type="submit" class="btn btn-secondary">Submit</button>
+   {% endbuttons %}
+   {% csrf_token %}
+   {{ formset.management_form }}
+   {% for form in formset %}
+   <div class="form-row"> {% bootstrap_form form layout='inline' form_group_class='col-auto m-1'%} 
+      <a href='#' onclick="deleteForm(event)" style="color:red">Delete</a>
+   </div>
+   {% endfor %}
+   <button id="add-form" type="button" class="btn btn-secondary">Add Column</button>
 </form>
-
 <script>
-  let columnForm = document.querySelectorAll(".form-row");
-  let container = document.querySelector("#form-container");
-  let addButton = document.querySelector("#add-form");
-  let totalForms = document.querySelector("#id_column_set-TOTAL_FORMS");
-
-  let formNum = columnForm.length-1; //Get the number of the last form on the page with zero-based indexing
-  addButton.addEventListener('click', addForm);
-
-  function addForm(e){
-      e.preventDefault();
-
-      let newForm = columnForm[0].cloneNode(true); //Clone the column form
-      let formRegex = RegExp(`column_set-(\\d){1}-`,'g'); //Regex to find all instances of the form number
-
-      formNum += 1; //Increment the form number
-      newForm.innerHTML = newForm.innerHTML.replace(formRegex, `column_set-${formNum}-`); //Update the new form to have the correct form number
-      container.insertBefore(newForm, addButton); //Insert the new form at the end of the list of forms
-      
-      totalForms.setAttribute('value', `${formNum+1}`); //Increment the number of total forms in the form management
-  };
-
-  function deleteForm(e){
-    e.preventDefault();
-    currentForm = e.target.parentNode;
-    currentForm.remove();
-    formNum -= 1; //Decrement the form number
-    totalForms.setAttribute('value', `${formNum+1}`); //Decrement the number of total forms in the form management
-    let columnForms = document.querySelectorAll(".form-row");
-    let counter = 0;
-    columnForms.forEach((form) => {
-      let formRegex = RegExp(`column_set-(\\d){1}-`,'g'); //Regex to find all instances of the form number
-      form.innerHTML = form.innerHTML.replace(formRegex, `column_set-${counter}-`); //Update all forms to have the correct form number
-      counter += 1;
-    });
-  }
-
-  function showRange(e){
-    const dataTypeInputName = e.target.name;
-    const dataTypeInputValue = e.target.value;
-    const startInputName = `${dataTypeInputName.slice(0, 13)}start_from`;
-    const toInputName = `${dataTypeInputName.slice(0, 13)}to`;
-    console.log(startInputName);
-    const startInput = document.getElementsByName(startInputName)[0];
-    const toInput = document.getElementsByName(toInputName)[0];
-    if (dataTypeInputValue === 'Age') {
-      startInput.hidden = false;
-      toInput.hidden = false;
-    } else {
-      startInput.hidden = true;
-      toInput.hidden = true;
-    }
-  };
-</script>
-
+   let columnForm = document.querySelectorAll(".form-row");
+   let container = document.querySelector("#form-container");
+   let addButton = document.querySelector("#add-form");
+   let totalForms = document.querySelector("#id_column_set-TOTAL_FORMS");
    
-  
+   let formNum = columnForm.length-1; //Get the number of the last form on the page with zero-based indexing
+   addButton.addEventListener('click', addForm);
+   
+   function addForm(e){
+       e.preventDefault();
+   
+       let newForm = columnForm[0].cloneNode(true); //Clone the column form
+       let formRegex = RegExp(`column_set-(\\d){1}-`,'g'); //Regex to find all instances of the form number
+   
+       formNum += 1; //Increment the form number
+       newForm.innerHTML = newForm.innerHTML.replace(formRegex, `column_set-${formNum}-`); //Update the new form to have the correct form number
+       container.insertBefore(newForm, addButton); //Insert the new form at the end of the list of forms
+       
+       totalForms.setAttribute('value', `${formNum+1}`); //Increment the number of total forms in the form management
+   };
+   
+   function deleteForm(e){
+     e.preventDefault();
+     currentForm = e.target.parentNode;
+     currentForm.remove();
+     formNum -= 1; //Decrement the form number
+     totalForms.setAttribute('value', `${formNum+1}`); //Decrement the number of total forms in the form management
+     let columnForms = document.querySelectorAll(".form-row");
+     let counter = 0;
+     columnForms.forEach((form) => {
+       let formRegex = RegExp(`column_set-(\\d){1}-`,'g'); //Regex to find all instances of the form number
+       form.innerHTML = form.innerHTML.replace(formRegex, `column_set-${counter}-`); //Update all forms to have the correct form number
+       counter += 1;
+     });
+   }
+   
+   function showRange(e){
+     const dataTypeInputName = e.target.name;
+     const dataTypeInputValue = e.target.value;
+     const startInputName = `${dataTypeInputName.slice(0, 13)}start_from`;
+     const toInputName = `${dataTypeInputName.slice(0, 13)}to`;
+     console.log(startInputName);
+     const startInput = document.getElementsByName(startInputName)[0];
+     const toInput = document.getElementsByName(toInputName)[0];
+     if (dataTypeInputValue === 'Age') {
+       startInput.hidden = false;
+       toInput.hidden = false;
+     } else {
+       startInput.hidden = true;
+       toInput.hidden = true;
+     }
+   };
+</script>
 {% endblock %}
-  

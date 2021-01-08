@@ -1,32 +1,26 @@
-
 {% extends "base.html" %}
 {% load bootstrap4 %}
 {% block title %} Login page {% endblock %}
 {% block h %} Login page {% endblock %}
 {% block content %}
-
-    {% if form.errors %}
-      <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
-    
-    {% if next %}
-      {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-      {% else %}
-        <p>Please enter your login and password</p>
-      {% endif %}
-    {% endif %}
-    
-    <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-     {% buttons %}
-    <input type="submit" value="Login" class="btn btn-primary" />
-    <input type="hidden" name="next" value="{{ next }}" />
-    {% endbuttons %}
-    </form>
-    
-
-    
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+{% if next %}
+{% if user.is_authenticated %}
+<p>Your account doesn't have access to this page. To proceed,
+   please login with an account that has access.
+</p>
+{% else %}
+<p>Please enter your login and password</p>
+{% endif %}
+{% endif %}
+<form method="post" action="{% url 'login' %}">
+   {% csrf_token %}
+   {% bootstrap_form form %}
+   {% buttons %}
+   <input type="submit" value="Login" class="btn btn-primary" />
+   <input type="hidden" name="next" value="{{ next }}" />
+   {% endbuttons %}
+</form>
 {% endblock %}

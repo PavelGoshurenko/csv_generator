@@ -1,155 +1,103 @@
 <!doctype html>
 <html>
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>{% block title %} CHANGE ME {% endblock %}</title>
-
-    <!-- Bootstrap 4 -->
-    {# Load the tag library #}
-    {% load bootstrap4 %}
-    {# Load CSS and JavaScript #}
-    {% bootstrap_css %}
-    <script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js"></script>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    
-    
-    <!-- Font Awesome -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-    <!-- Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
-
-    <!-- Tempus Dominus Bootstrap 4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
-
-</head>
-
-<body>
-
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">CSV fake data generator</a>
-        {% if user.is_authenticated %}
-        <div class="text-white text-uppercase">Hello, {{ user.get_username }} </div>
-        {% else %}
-        <div class="text-white text-uppercase">You have to ligin -->> </div>
-                    {% endif %}
-        <ul class="navbar-nav px-3">
-          {% if user.is_authenticated %}
-          <li class="nav-item text-nowrap">
-            <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
-          </li>
-          {% else %}
-          <li class="nav-item text-nowrap">
-            <a class="nav-link" href="{% url 'login'%}?next={{request.path}}">Login</a>
-          </li>
-          {% endif %}
-        </ul>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>{% block title %} CHANGE ME {% endblock %}</title>
+      <!-- Bootstrap 4 -->
+      {# Load the tag library #}
+      {% load bootstrap4 %}
+      {# Load CSS and JavaScript #}
+      {% bootstrap_css %}
+      <script
+         src="https://code.jquery.com/jquery-3.5.1.js"
+         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+         crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js"></script>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+      <!-- Font Awesome -->
+      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+      <!-- Moment.js -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+      <!-- Tempus Dominus Bootstrap 4 -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+   </head>
+   <body>
+      <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">CSV fake data generator</a>
+         {% if user.is_authenticated %}
+         <div class="text-white text-uppercase">Hello, {{ user.get_username }} </div>
+         {% else %}
+         <div class="text-white text-uppercase">You have to ligin -->> </div>
+         {% endif %}
+         <ul class="navbar-nav px-3">
+            {% if user.is_authenticated %}
+            <li class="nav-item text-nowrap">
+               <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item text-nowrap">
+               <a class="nav-link" href="{% url 'login'%}?next={{request.path}}">Login</a>
+            </li>
+            {% endif %}
+         </ul>
       </nav>
-  
-
-
       <div class="container-fluid">
-        <div class="row">
-          <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-
-              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                <span>Context menu</span>
-              </h6>
-              <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                  <div id='context-block' class="nav-link">{% block context %}{% endblock %}</div>
-                </li>
-              </ul>
-
-
-
-              <ul class="nav flex-column">
-                
-
-
-
-
-
-
-
-
-<li class="nav-item">
-  <a class="nav-link" href="{% url 'schemas' %}">
-    <span data-feather="bar-chart-2"></span>
-    Schemas
-  </a>
-</li>
-
-
- 
-<li class="nav-item">
-  <a class="nav-link" href="/admin/">
-    <span data-feather="bar-chart-2"></span>
-    Admin panel
-  </a>
-</li>
- 
-  
- 
-
-
-
-              </ul>
-  
-              
-            </div>
-          </nav>
-  
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-              <h1 class="h2">{% block h %}  {% endblock %}</h1>
-              <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                  
-                </div>
-               
-              </div>
-            </div>
-  
-            
-  
-            
-            <div class="table-responsive"></div>
-            <div id='main-data'>
-            {% block content %}{% endblock %}
-             </div>
-            </div>
-          </main>
-        </div>
+         <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+               <div class="sidebar-sticky">
+                  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                     <span>Context menu</span>
+                  </h6>
+                  <ul class="nav flex-column mb-2">
+                     <li class="nav-item">
+                        <div id='context-block' class="nav-link">{% block context %}{% endblock %}</div>
+                     </li>
+                  </ul>
+                  <ul class="nav flex-column">
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'schemas' %}">
+                        <span data-feather="bar-chart-2"></span>
+                        Schemas
+                        </a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/admin/">
+                        <span data-feather="bar-chart-2"></span>
+                        Admin panel
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                  <h1 class="h2">{% block h %}  {% endblock %}</h1>
+                  <div class="btn-toolbar mb-2 mb-md-0">
+                     <div class="btn-group mr-2">
+                     </div>
+                  </div>
+               </div>
+               <div class="table-responsive"></div>
+               <div id='main-data'>
+                  {% block content %}{% endblock %}
+               </div>
+         </div>
+         </main>
       </div>
-  
+      </div>
       <!-- Bootstrap core JavaScript
-      ================================================== -->
+         ================================================== -->
       <!-- Placed at the end of the document so the pages load faster -->
-      
       <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-      
-  
       <!-- Icons -->
       <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
       <script>
-        feather.replace()
+         feather.replace()
       </script>
-  
       <!-- Graphs -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-     
-</body>
-
+   </body>
 </html>

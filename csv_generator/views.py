@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.forms.models import inlineformset_factory
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from csv_generator.models import Schema, Column, DataSet
 from csv_generator.forms import SchemaForm, DataSetForm, ColumnForm
@@ -20,7 +20,13 @@ class SchemasView(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def schema_create(request):
-    ColumnsFormSet = inlineformset_factory(Schema, Column, form=ColumnForm, can_order=False, extra=1, can_delete=False)
+    ColumnsFormSet = inlineformset_factory(
+        Schema,
+        Column,
+        form=ColumnForm,
+        can_order=False,
+        extra=1,
+        can_delete=False)
     if request.method == 'POST':
         formset = ColumnsFormSet(request.POST)
         form = SchemaForm(request.POST)
@@ -34,12 +40,19 @@ def schema_create(request):
                     column.schema = schema
                     column.save()
             return redirect('schemas')
-        else: return render(request, 'add_schema.html', {'formset': formset, 'form': form})
+        else:
+            return render(
+                request,
+                'add_schema.html',
+                {'formset': formset, 'form': form})
     else:
         formset = ColumnsFormSet()
-        form =  SchemaForm()
-    return render(request, 'add_schema.html', {'formset': formset, 'form': form})
-
+        form = SchemaForm()
+    return render(
+        request,
+        'add_schema.html',
+        {'formset': formset, 'form': form}
+    )
 
 
 class SchemaDelete(LoginRequiredMixin, DeleteView):
@@ -61,4 +74,12 @@ def data_sets(request, pk):
             generate_csv.delay(new_data_set.id)
     form = DataSetForm()
     data_sets = DataSet.objects.filter(schema=schema)
-    return render(request, 'data_sets.html', {'schema': schema, 'data_sets': data_sets, 'form': form})
+    return render(
+        request,
+        'data_sets.html',
+        {
+            'schema': schema,
+            'data_sets': data_sets,
+            'form': form
+        }
+    )
