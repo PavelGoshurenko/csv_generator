@@ -58,8 +58,7 @@ def data_sets(request, pk):
                 schema=schema
             )
             new_data_set.save()
-            generate_csv(new_data_set.id) # add delay
+            generate_csv.delay(new_data_set.id)
     form = DataSetForm()
     data_sets = DataSet.objects.filter(schema=schema)
     return render(request, 'data_sets.html', {'schema': schema, 'data_sets': data_sets, 'form': form})
-
