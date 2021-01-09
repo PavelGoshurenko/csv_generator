@@ -40,6 +40,7 @@
 {% endif %}  
 <script>
    window.onload = function () {
+      // Changes the status css class depending on the status value.
      const statuses = document.getElementsByName("status-button");
      statuses.forEach((status) => {
        if (status.innerHTML === "Ready") {

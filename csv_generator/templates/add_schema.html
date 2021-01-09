@@ -28,6 +28,7 @@
    addButton.addEventListener('click', addForm);
    
    function addForm(e){
+     // Function adds a form after clicking on the "Add Form" button.
        e.preventDefault();
    
        let newForm = columnForm[0].cloneNode(true); //Clone the column form
@@ -41,6 +42,7 @@
    };
    
    function deleteForm(e){
+     // Function removes form after clicking on "delete" link.
      e.preventDefault();
      currentForm = e.target.parentNode;
      currentForm.remove();
@@ -56,17 +58,17 @@
    }
    
    function showRange(e){
+     // Function shows or hides input fields depending on which data type is selected.
      const dataTypeInputName = e.target.name;
      const dataTypeInputValue = e.target.value;
      const startInputName = `${dataTypeInputName.slice(0, 13)}start_from`;
      const toInputName = `${dataTypeInputName.slice(0, 13)}to`;
-     console.log(startInputName);
      const startInput = document.getElementsByName(startInputName)[0];
      const toInput = document.getElementsByName(toInputName)[0];
-     if (dataTypeInputValue === 'Age') {
+     if (dataTypeInputValue === 'Age') { // If the data type is "Age" - show the fields.
        startInput.hidden = false;
        toInput.hidden = false;
-     } else {
+     } else { // If it's another type, hide the fields.
        startInput.hidden = true;
        toInput.hidden = true;
      }

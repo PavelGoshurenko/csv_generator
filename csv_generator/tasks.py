@@ -24,6 +24,7 @@ GENERATORS = {
 
 @app.task
 def generate_csv(data_set_id):
+    ''' Generates csv file based on data from data_set model. Use the celery.'''
     data_set = DataSet.objects.get(id=data_set_id)
     schema = data_set.schema
     columns = Column.objects.filter(schema=schema).order_by('order')
