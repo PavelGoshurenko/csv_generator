@@ -20,6 +20,7 @@ class SchemasView(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def schema_create(request):
+    '''Creates a new schema and a set of columns for it.'''
     ColumnsFormSet = inlineformset_factory(
         Schema,
         Column,
@@ -62,6 +63,7 @@ class SchemaDelete(LoginRequiredMixin, DeleteView):
 
 @login_required
 def data_sets(request, pk):
+    '''Displays all datasets for the schema. Generates csv files for datasets.'''
     schema = Schema.objects.get(id=pk)
     if request.method == 'POST':
         form = DataSetForm(request.POST)
@@ -71,7 +73,7 @@ def data_sets(request, pk):
                 schema=schema
             )
             new_data_set.save()
-            generate_csv.delay(new_data_set.id)
+            generate_csv.delay(new_data_set.id) # Send generate csv file task to celery.
     form = DataSetForm()
     data_sets = DataSet.objects.filter(schema=schema)
     return render(

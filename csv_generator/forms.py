@@ -16,6 +16,8 @@ class DataSetForm (forms.ModelForm):
 
 
 class ColumnForm (forms.ModelForm):
+    '''The form adds JS handler function for the 'data_type' field. (The function itself is in the template add_schema.html).
+    For 'start_from' and  'to' fields, the "hidden" attribute is added. This attribute will also be changed in the template using JS functions.'''
     class Meta:
         model = Column
         fields = ('name', 'data_type', 'start_from', 'to', 'order')
